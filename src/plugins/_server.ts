@@ -42,21 +42,10 @@ export async function writeFileToRepo(
     const isDevMode = !token || !owner || !repo;
 
     if (isDevMode) {
-        try {
-            const absPath = resolve(process.cwd(), filePath);
-            mkdirSync(dirname(absPath), { recursive: true });
-            writeFileSync(absPath, content, 'utf-8');
-            return true;
-        } catch (err: any) {
-            if (err.code === 'EROFS' || err.code === 'EACCES') {
-                throw new Error(
-                    'Configuração necessária: as variáveis GITHUB_TOKEN, GITHUB_OWNER e GITHUB_REPO ' +
-                    'não estão definidas. Acesse Vercel Dashboard → Settings → Environment Variables ' +
-                    'e adicione as três variáveis para habilitar a escrita no repositório em produção.'
-                );
-            }
-            throw err;
-        }
+        const absPath = resolve(process.cwd(), filePath);
+        mkdirSync(dirname(absPath), { recursive: true });
+        writeFileSync(absPath, content, 'utf-8');
+        return true;
     }
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;
@@ -95,21 +84,10 @@ export async function writeBinaryToRepo(
     const isDevMode = !token || !owner || !repo;
 
     if (isDevMode) {
-        try {
-            const absPath = resolve(process.cwd(), filePath);
-            mkdirSync(dirname(absPath), { recursive: true });
-            writeFileSync(absPath, Buffer.from(base64Content, 'base64'));
-            return true;
-        } catch (err: any) {
-            if (err.code === 'EROFS' || err.code === 'EACCES') {
-                throw new Error(
-                    'Configuração necessária: as variáveis GITHUB_TOKEN, GITHUB_OWNER e GITHUB_REPO ' +
-                    'não estão definidas. Acesse Vercel Dashboard → Settings → Environment Variables ' +
-                    'e adicione as três variáveis para habilitar a escrita no repositório em produção.'
-                );
-            }
-            throw err;
-        }
+        const absPath = resolve(process.cwd(), filePath);
+        mkdirSync(dirname(absPath), { recursive: true });
+        writeFileSync(absPath, Buffer.from(base64Content, 'base64'));
+        return true;
     }
 
     const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${filePath}`;

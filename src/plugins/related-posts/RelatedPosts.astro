@@ -7,7 +7,6 @@
  */
 import { getCollection } from 'astro:content';
 import { readData } from '../../lib/readData';
-import { postUrl } from '../../lib/blogRoutes';
 
 interface Props {
   currentSlug: string;
@@ -61,7 +60,7 @@ if (enabled && category) {
             <div class="post post-grid rounded bordered">
               {post.data.heroImage && (
                 <div class="thumb top-rounded">
-                  <a href={postUrl(post.slug)}>
+                  <a href={`/blog/${post.slug}`}>
                     <div class="inner">
                       <img src={post.data.heroImage} alt={post.data.title} loading="lazy" />
                     </div>
@@ -74,11 +73,11 @@ if (enabled && category) {
               <div class="details clearfix">
                 <ul class="meta list-inline mb-0">
                   <li class="list-inline-item">
-                    <a href={postUrl(post.slug)}>{postDate}</a>
+                    <a href={`/blog/${post.slug}`}>{postDate}</a>
                   </li>
                 </ul>
                 <h4 class="title">
-                  <a href={postUrl(post.slug)}>{post.data.title}</a>
+                  <a href={`/blog/${post.slug}`}>{post.data.title}</a>
                 </h4>
                 {post.data.description && (
                   <p class="post-excerpt">{post.data.description}</p>

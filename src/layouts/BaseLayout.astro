@@ -1,6 +1,5 @@
 ---
 import { readData } from '../lib/readData';
-import { blogIndexUrl } from '../lib/blogRoutes';
 import { getCollection } from 'astro:content';
 import HeadPlugins from '../plugins/_slots/HeadPlugins.astro';
 import BodyEndPlugins from '../plugins/_slots/BodyEndPlugins.astro';
@@ -21,12 +20,12 @@ const fontMap: Record<string, { heading: string; body: string; url: string }> = 
 };
 const selectedFont = fontMap[siteConfig.theme?.font || 'poppins'] || fontMap.poppins;
 
-const primaryColor = siteConfig.theme?.primary || '#3B82F6';
-const accentColor = siteConfig.theme?.accent || '#6366F1';
-const darkColor = siteConfig.theme?.dark || '#1E293B';
-
-const menuItems: any[] = readData('menu.json', { items: [] }).items || [];
+const primaryColor = siteConfig.theme?.primary || '#FE4F70';
+const accentColor = siteConfig.theme?.accent || '#FFA387';
+const darkColor = siteConfig.theme?.dark || '#203656';
 const categoriesData = readData('categories.json', []);
+const menuItems: any[] = readData('menu.json', { items: [] }).items || [];
+
 const posts = await getCollection('blog');
 const categoriesFromPosts = [...new Set(posts.map(p => p.data.category).filter(Boolean))];
 const finalCategoriesData = Array.isArray(categoriesData) ? categoriesData : [];
@@ -56,11 +55,11 @@ const socialImage = image?.startsWith('http') ? image : image ? new URL(image, s
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <title>{formattedTitle}</title>
   <meta name="description" content={description}>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="icon" href={siteConfig.favicon || '/favicon.svg'} />
 
   <!-- Google Search Console verification -->
   {gscVerificationTag && (
@@ -76,166 +75,231 @@ const socialImage = image?.startsWith('http') ? image : image ? new URL(image, s
   {socialImage && <meta property="og:image" content={socialImage} />}
   <meta property="og:url" content={Astro.url} />
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: 'var(--color-primary)',
-            accent: 'var(--color-accent)',
-            dark: 'var(--color-dark)',
-          },
-          fontFamily: {
-            heading: 'var(--font-heading)',
-            body: 'var(--font-body)',
-          }
-        }
-      }
-    }
-  </script>
-
-  <!-- Google Fonts -->
+  <!-- STYLES via CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css">
+  <!-- Walker theme -->
+  <link rel="stylesheet" href="/css/style.css">
+  <!-- Google Fonts (dynamic) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href={`https://fonts.googleapis.com/css2?${selectedFont.url}&display=swap`}>
-
-  <!-- CSS vars from CMS config -->
+  <!-- Dynamic theme colors from CMS -->
   <Fragment set:html={`<style>
     :root {
-      --color-primary: ${primaryColor};
-      --color-accent: ${accentColor};
-      --color-dark: ${darkColor};
-      --font-heading: "${selectedFont.heading}", sans-serif;
-      --font-body: "${selectedFont.body}", sans-serif;
+      --walker-primary: ${primaryColor};
+      --walker-accent: ${accentColor};
+      --walker-dark: ${darkColor};
+      --walker-font-heading: "${selectedFont.heading}", sans-serif;
+      --walker-font-body: "${selectedFont.body}", sans-serif;
     }
-    body { font-family: var(--font-body); color: var(--color-dark); }
-    h1,h2,h3,h4,h5,h6 { font-family: var(--font-heading); }
-    .btn-primary { background-color: var(--color-primary); color: #fff; padding: 0.5rem 1.25rem; border-radius: 0.375rem; font-weight: 600; display: inline-block; }
-    .btn-primary:hover { opacity: 0.9; }
-    .category-badge { background-color: var(--color-primary); color: #fff; font-size: 0.7rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.05em; }
-    .post-content h1,.post-content h2,.post-content h3,.post-content h4 { font-family: var(--font-heading); font-weight: 700; margin: 1.5rem 0 0.75rem; }
-    .post-content p { margin-bottom: 1rem; line-height: 1.8; }
-    .post-content ul,.post-content ol { margin-bottom: 1rem; padding-left: 1.5rem; }
-    .post-content li { margin-bottom: 0.25rem; }
-    .post-content img { max-width: 100%; border-radius: 0.5rem; }
-    .post-content a { color: var(--color-primary); text-decoration: underline; }
-    .post-content blockquote { border-left: 4px solid var(--color-primary); padding-left: 1rem; font-style: italic; margin: 1.5rem 0; color: #64748B; }
-    .post-content code { background: #F1F5F9; padding: 0.15rem 0.35rem; border-radius: 0.25rem; font-size: 0.9em; }
-    .post-content pre { background: #1E293B; color: #E2E8F0; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; margin-bottom: 1rem; }
-    .post-content pre code { background: none; padding: 0; }
   </style>`} />
-
   <!-- Head plugins: GA, Meta Pixel, AdSense -->
   <HeadPlugins />
 </head>
 
-<body class={`bg-gray-50 min-h-screen flex flex-col ${bodyClass}`}>
+<body class={bodyClass}>
 
-  <!-- Header -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 no-underline">
-        {siteConfig.logo ? (
-          <img src={siteConfig.logo} alt={siteConfig.name} class="h-8" />
-        ) : (
-          <span style={`font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--color-dark);`}>{siteConfig.name}</span>
-        )}
-      </a>
+<!-- preloader -->
+<div id="preloader">
+  <div class="book">
+    <div class="inner">
+      <div class="left"></div>
+      <div class="middle"></div>
+      <div class="right"></div>
+    </div>
+    <ul>
+      <li></li><li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li><li></li>
+      <li></li><li></li><li></li><li></li><li></li><li></li>
+    </ul>
+  </div>
+</div>
 
-      <!-- Nav -->
-      <nav class="hidden md:flex items-center gap-6">
-        {menuItems.length > 0 ? menuItems.map((item: any) => (
-          <div class="relative group">
-            <a href={item.href} class="text-sm font-medium text-gray-700 hover:text-[--color-primary] transition-colors">{item.label}</a>
-            {item.showCategories && allCategories.length > 0 && (
-              <div class="absolute top-full left-0 bg-white border border-gray-200 rounded-lg shadow-lg py-2 min-w-40 hidden group-hover:block z-10">
-                <a href={item.href} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Todos os Artigos</a>
-                {allCategories.map((cat: any) => (
-                  <a href={`/categoria/${cat.toLowerCase().replace(/[^a-z0-9]/g, '-')}`} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">{cat}</a>
-                ))}
-              </div>
+<!-- site wrapper -->
+<div class="site-wrapper">
+
+  <div class="main-overlay"></div>
+
+  <!-- header -->
+  <header class="header-default">
+    <nav class="navbar navbar-expand-lg">
+      <div class="container-xl">
+        <!-- logo -->
+        <a class="navbar-brand" href="/">
+          {siteConfig.logo ? (
+            <img src={siteConfig.logo} alt={siteConfig.name} />
+          ) : (
+            <span style="font-family: var(--walker-font-heading); font-weight: 700; font-size: 1.5rem; color: var(--walker-dark);">{siteConfig.name}</span>
+          )}
+        </a>
+
+        <div class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            {menuItems.map((item: any) => (
+              item.showCategories ? (
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href={item.href}>{item.label}</a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href={item.href}>Todos os Artigos</a></li>
+                    {allCategories.map(cat => (
+                      <li>
+                        <a class="dropdown-item" href={`/categoria/${cat.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}>{cat}</a>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) : (
+                <li class="nav-item">
+                  <a class="nav-link" href={item.href}>{item.label}</a>
+                </li>
+              )
+            ))}
+          </ul>
+        </div>
+
+        <!-- header right -->
+        <div class="header-right">
+          <ul class="social-icons list-unstyled list-inline mb-0">
+            {siteConfig.social?.facebook && (
+              <li class="list-inline-item"><a href={siteConfig.social.facebook} target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a></li>
             )}
+            {siteConfig.social?.twitter && (
+              <li class="list-inline-item"><a href={siteConfig.social.twitter} target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a></li>
+            )}
+            {siteConfig.social?.instagram && (
+              <li class="list-inline-item"><a href={siteConfig.social.instagram} target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a></li>
+            )}
+            {siteConfig.social?.pinterest && (
+              <li class="list-inline-item"><a href={siteConfig.social.pinterest} target="_blank" rel="noopener"><i class="fab fa-pinterest"></i></a></li>
+            )}
+            {siteConfig.social?.youtube && (
+              <li class="list-inline-item"><a href={siteConfig.social.youtube} target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a></li>
+            )}
+          </ul>
+          <div class="header-buttons">
+            <button class="search icon-button">
+              <i class="icon-magnifier"></i>
+            </button>
+            <button class="burger-menu icon-button">
+              <span class="burger-icon"></span>
+            </button>
           </div>
-        )) : (
-          <>
-            <a href="/" class="text-sm font-medium text-gray-700 hover:text-[--color-primary] transition-colors">Home</a>
-            <a href={blogIndexUrl()} class="text-sm font-medium text-gray-700 hover:text-[--color-primary] transition-colors">Blog</a>
-            <a href="/sobre" class="text-sm font-medium text-gray-700 hover:text-[--color-primary] transition-colors">Sobre</a>
-            <a href="/contato" class="text-sm font-medium text-gray-700 hover:text-[--color-primary] transition-colors">Contato</a>
-          </>
-        )}
-      </nav>
-
-      <!-- Social icons (desktop) -->
-      <div class="hidden md:flex items-center gap-3">
-        {siteConfig.social?.instagram && (
-          <a href={siteConfig.social.instagram} target="_blank" rel="noopener" class="text-gray-500 hover:text-[--color-primary] transition-colors text-sm">IG</a>
-        )}
-        {siteConfig.social?.twitter && (
-          <a href={siteConfig.social.twitter} target="_blank" rel="noopener" class="text-gray-500 hover:text-[--color-primary] transition-colors text-sm">TW</a>
-        )}
-        {siteConfig.social?.youtube && (
-          <a href={siteConfig.social.youtube} target="_blank" rel="noopener" class="text-gray-500 hover:text-[--color-primary] transition-colors text-sm">YT</a>
-        )}
+        </div>
       </div>
-
-      <!-- Mobile menu toggle -->
-      <button id="mobile-menu-btn" class="md:hidden p-2 text-gray-700" aria-label="Menu">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-
-    <!-- Mobile nav -->
-    <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white">
-      <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col gap-3">
-        {menuItems.length > 0 ? menuItems.map((item: any) => (
-          <a href={item.href} class="text-sm font-medium text-gray-700 py-1">{item.label}</a>
-        )) : (
-          <>
-            <a href="/" class="text-sm font-medium text-gray-700 py-1">Home</a>
-            <a href={blogIndexUrl()} class="text-sm font-medium text-gray-700 py-1">Blog</a>
-            <a href="/sobre" class="text-sm font-medium text-gray-700 py-1">Sobre</a>
-            <a href="/contato" class="text-sm font-medium text-gray-700 py-1">Contato</a>
-          </>
-        )}
-      </div>
-    </div>
+    </nav>
   </header>
 
-  <!-- Page content -->
-  <main class="flex-1">
-    <slot />
-  </main>
+  <!-- PAGE CONTENT -->
+  <slot />
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200 mt-12">
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-        <p class="text-sm text-gray-500">© {new Date().getFullYear()} {siteConfig.name}. Todos os direitos reservados.</p>
-        <nav class="flex items-center gap-4">
-          <a href="/privacidade" class="text-sm text-gray-500 hover:text-gray-700">Privacidade</a>
-          <a href="/termos" class="text-sm text-gray-500 hover:text-gray-700">Termos</a>
-          <a href="/contato" class="text-sm text-gray-500 hover:text-gray-700">Contato</a>
-        </nav>
+  <!-- instagram feed -->
+  {siteConfig.social?.instagram && (
+    <div class="instagram">
+      <div class="container-xl">
+        <a href={siteConfig.social.instagram} class="btn btn-default btn-instagram" target="_blank" rel="noopener">
+          @{siteConfig.social.instagram.replace('https://instagram.com/', '').replace('https://www.instagram.com/', '')} no Instagram
+        </a>
+        <div class="instagram-feed d-flex flex-wrap">
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta1/300/300" alt="instagram" /></a></div>
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta2/300/300" alt="instagram" /></a></div>
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta3/300/300" alt="instagram" /></a></div>
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta4/300/300" alt="instagram" /></a></div>
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta5/300/300" alt="instagram" /></a></div>
+          <div class="insta-item col-sm-2 col-6 col-md-2"><a href={siteConfig.social.instagram}><img src="https://picsum.photos/seed/insta6/300/300" alt="instagram" /></a></div>
+        </div>
+      </div>
+    </div>
+  )}
+
+  <!-- footer -->
+  <footer>
+    <div class="container-xl">
+      <div class="footer-inner">
+        <div class="row d-flex align-items-center gy-4">
+          <div class="col-md-4">
+            <span class="copyright">© {new Date().getFullYear()} {siteConfig.name}.</span>
+          </div>
+          <div class="col-md-4 text-center">
+            <ul class="social-icons list-unstyled list-inline mb-0">
+              {siteConfig.social?.facebook && (<li class="list-inline-item"><a href={siteConfig.social.facebook} target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a></li>)}
+              {siteConfig.social?.twitter && (<li class="list-inline-item"><a href={siteConfig.social.twitter} target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a></li>)}
+              {siteConfig.social?.instagram && (<li class="list-inline-item"><a href={siteConfig.social.instagram} target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a></li>)}
+              {siteConfig.social?.pinterest && (<li class="list-inline-item"><a href={siteConfig.social.pinterest} target="_blank" rel="noopener"><i class="fab fa-pinterest"></i></a></li>)}
+              {siteConfig.social?.youtube && (<li class="list-inline-item"><a href={siteConfig.social.youtube} target="_blank" rel="noopener"><i class="fab fa-youtube"></i></a></li>)}
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <a href="#" id="return-to-top" class="float-md-end"><i class="icon-arrow-up"></i>Voltar ao Topo</a>
+          </div>
+        </div>
       </div>
     </div>
   </footer>
 
-  <!-- Body-end plugins: EmailPopup, CookieConsent -->
-  <BodyEndPlugins />
+</div><!-- end site wrapper -->
 
-  <!-- Mobile menu script -->
-  <script is:inline>
-    document.getElementById('mobile-menu-btn')?.addEventListener('click', function() {
-      const menu = document.getElementById('mobile-menu');
-      if (menu) menu.classList.toggle('hidden');
-    });
-  </script>
+<!-- search popup -->
+<div class="search-popup">
+  <button type="button" class="btn-close" aria-label="Close"></button>
+  <div class="search-content">
+    <div class="text-center">
+      <h3 class="mb-4 mt-0">Pressione ESC para fechar</h3>
+    </div>
+    <form class="d-flex search-form" action="/blog">
+      <input class="form-control me-2" type="search" name="q" placeholder="Buscar e pressione Enter ..." aria-label="Search">
+      <button class="btn btn-default btn-lg" type="submit"><i class="icon-magnifier"></i></button>
+    </form>
+  </div>
+</div>
+
+<!-- canvas menu -->
+<div class="canvas-menu d-flex align-items-end flex-column">
+  <button type="button" class="btn-close" aria-label="Close"></button>
+  <div class="logo">
+    {siteConfig.logo ? (
+      <img src={siteConfig.logo} alt={siteConfig.name} />
+    ) : (
+      <span style="font-family: var(--walker-font-heading); font-weight: 700; font-size: 1.5rem; color: var(--walker-dark);">{siteConfig.name}</span>
+    )}
+  </div>
+  <nav>
+    <ul class="vertical-menu">
+      {menuItems.map((item: any) => (
+        item.showCategories ? (
+          <li>
+            <a href={item.href}>{item.label}</a>
+            <ul class="submenu">
+              {allCategories.map(cat => (
+                <li><a href={`/categoria/${cat.toLowerCase().replace(/[^a-z0-9]/g, '-')}`}>{cat}</a></li>
+              ))}
+            </ul>
+          </li>
+        ) : (
+          <li><a href={item.href}>{item.label}</a></li>
+        )
+      ))}
+    </ul>
+  </nav>
+  <ul class="social-icons list-unstyled list-inline">
+    {siteConfig.social?.facebook && (<li class="list-inline-item"><a href={siteConfig.social.facebook} target="_blank" rel="noopener"><i class="fab fa-facebook-f"></i></a></li>)}
+    {siteConfig.social?.twitter && (<li class="list-inline-item"><a href={siteConfig.social.twitter} target="_blank" rel="noopener"><i class="fab fa-twitter"></i></a></li>)}
+    {siteConfig.social?.instagram && (<li class="list-inline-item"><a href={siteConfig.social.instagram} target="_blank" rel="noopener"><i class="fab fa-instagram"></i></a></li>)}
+  </ul>
+</div>
+
+<!-- Body-end plugins: EmailPopup, CookieConsent -->
+<BodyEndPlugins />
+
+<!-- SCRIPTS -->
+<script is:inline src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script is:inline src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script is:inline src="/js/jquery.sticky-sidebar.min.js"></script>
+<script is:inline src="/js/custom.js"></script>
 
 </body>
 </html>

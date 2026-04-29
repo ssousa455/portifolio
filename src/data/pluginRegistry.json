@@ -1,12 +1,12 @@
 [
   {
-    "name": "google-analytics",
-    "label": "Google Analytics",
-    "description": "Rastreie visitas e comportamento dos leitores com GA4.",
-    "icon": "BarChart3",
-    "color": "text-orange-600",
-    "bg": "bg-orange-50",
-    "href": "/admin/analytics"
+    "name": "google-tag",
+    "label": "Google Tag",
+    "description": "Configure todas as tags do Google (Analytics, Ads, Tag Manager) em um so lugar.",
+    "icon": "Tag",
+    "color": "text-blue-600",
+    "bg": "bg-blue-50",
+    "href": "/admin/google-tag"
   },
   {
     "name": "meta-pixel",
@@ -115,14 +115,5 @@
     "color": "text-slate-600",
     "bg": "bg-slate-100",
     "href": "/admin/import-wp"
-  },
-  {
-    "name": "updater",
-    "label": "Atualizações",
-    "description": "Verifique e instale atualizações do template Walker.",
-    "icon": "RefreshCw",
-    "color": "text-sky-600",
-    "bg": "bg-sky-50",
-    "href": "/admin/updates"
   }
 ]
