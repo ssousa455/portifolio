@@ -1,0 +1,18 @@
+---
+import { readData } from '../../lib/readData';
+const portfolio = readData('portfolio.json');
+const stats = portfolio.stats;
+---
+
+<section style="background: var(--walker-dark, #0f172a); border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 48px 0;">
+  <div class="container-xl">
+    <div class="row text-center">
+      {stats.map((stat: { value: string; label: string }) => (
+        <div class="col-6 col-lg-3 mb-3 mb-lg-0">
+          <h3 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 2.5rem; font-weight: 700; color: var(--walker-primary, #3B82F6); margin-bottom: 0.5rem;">{stat.value}</h3>
+          <p style="color: rgba(255,255,255,0.6); font-size: 0.95rem;">{stat.label}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

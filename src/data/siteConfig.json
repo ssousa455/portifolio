@@ -1,15 +1,15 @@
 {
-  "name": "Meu Blog",
-  "description": "Um blog criado com cms-core — substitua este texto pela descrição do seu site.",
-  "url": "https://meublog.com.br",
-  "author": "Autor",
+  "name": "Sérgio Sousa | Automação & TI",
+  "description": "Portfólio de Sérgio Sousa — Analista de TI especializado em automação, Python, IA generativa e otimização de operações.",
+  "url": "https://ssousa455.vercel.app",
+  "author": "Sérgio Sousa",
   "language": "pt-BR",
   "logo": "",
   "theme": {
     "primary": "#3B82F6",
     "accent": "#6366F1",
-    "font": "poppins",
-    "dark": "#1E293B"
+    "font": "inter",
+    "dark": "#0f172a"
   },
   "social": {
     "instagram": "",
@@ -19,15 +19,15 @@
     "youtube": ""
   },
   "contact": {
-    "email": "",
-    "phone": "",
+    "email": "sergio.r.sousa@email.com",
+    "phone": "5584996562202",
     "address": "",
-    "name": ""
+    "name": "Sérgio Sousa"
   },
   "legal": {
     "terms_last_updated": "",
     "privacy_last_updated": ""
   },
-  "phone": "",
+  "phone": "5584996562202",
   "address": ""
 }

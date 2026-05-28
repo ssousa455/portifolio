@@ -1,0 +1,27 @@
+---
+import { readData } from '../../lib/readData';
+const portfolio = readData('portfolio.json');
+const contact = portfolio.contact;
+
+const iconMap: Record<string, string> = {
+  envelope: 'fa-envelope',
+  linkedin: 'fa-linkedin-in',
+  github: 'fa-github',
+  whatsapp: 'fa-whatsapp'
+};
+---
+
+<section id="contato" style="padding: 80px 0; background: var(--walker-dark, #0f172a);">
+  <div class="container-xl text-center" style="max-width: 800px;">
+    <h2 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 1rem;">{contact.title}</h2>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 2rem;">{contact.description}</p>
+    <div class="d-flex justify-content-center gap-3 flex-wrap">
+      {contact.links.map((link: { icon: string; label: string; url: string }) => (
+        <a href={link.url} target="_blank" rel="noopener noreferrer" class="btn btn-light btn-lg px-4 py-3 d-flex align-items-center gap-2" style="border-radius: 8px;">
+          <i class={`fab ${iconMap[link.icon] || 'fa-link'}`}></i>
+          <span>{link.label}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

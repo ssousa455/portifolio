@@ -1,0 +1,83 @@
+{
+  "hero": {
+    "title": "Automação &<br>Tecnologia",
+    "subtitle": "Analista de TI — Especialista em Automação — Gestão de Operações",
+    "description": "8+ anos transformando processos complexos em soluções elegantes. Especialista em n8n, Python, IA generativa e otimização de operações. Código limpo, resultados mensuráveis.",
+    "photoUrl": "https://i.ibb.co/nNwmGQHn/foto-curriculo.png",
+    "buttons": [
+      { "label": "Ver GitHub", "url": "https://github.com/ssousa455", "style": "primary" },
+      { "label": "Falar Comigo", "url": "#contato", "style": "secondary" }
+    ]
+  },
+  "stats": [
+    { "value": "8+", "label": "Anos de Experiência" },
+    { "value": "50+", "label": "Projetos Entregues" },
+    { "value": "15k+", "label": "Corridas 4.9★" },
+    { "value": "24/7", "label": "Aprendizado Contínuo" }
+  ],
+  "projects": [
+    {
+      "title": "edge-tts-gui",
+      "lang": "Python",
+      "description": "Interface gráfica simplificada para Edge TTS (Text-to-Speech da Microsoft). Converte texto em áudio natural com vozes de alta qualidade.",
+      "url": "https://github.com/ssousa455/edge-tts-gui",
+      "updated": "Atualizado recentemente"
+    },
+    {
+      "title": "Concurseiro-Pro",
+      "lang": "TypeScript",
+      "description": "Sistema completo de gestão de estudos para concursos públicos. Focado em resolução de questões, acompanhamento de desempenho e metas.",
+      "url": "https://github.com/ssousa455/Concurseiro-Pro",
+      "updated": "Atualizado recentemente"
+    },
+    {
+      "title": "video_dubbing_agent_colab",
+      "lang": "Jupyter",
+      "description": "Pipeline completo de dublagem automatizada para vídeos. Qualquer idioma → qualquer idioma usando IA e clonagem de voz.",
+      "url": "https://github.com/ssousa455/video_dubbing_agent_colab",
+      "updated": "Atualizado recentemente"
+    },
+    {
+      "title": "mente-foco",
+      "lang": "TypeScript",
+      "description": "Sistema de controle de estudos com técnicas de produtividade e foco. Timer Pomodoro integrado e gamificação.",
+      "url": "https://github.com/ssousa455/mente-foco",
+      "updated": "Atualizado recentemente"
+    },
+    {
+      "title": "ai_voice_dubbing",
+      "lang": "Python",
+      "description": "Suite de ferramentas para dublagem com IA. Processamento de áudio em lote, sincronização labial e manutenção de características vocais originais.",
+      "url": "https://github.com/ssousa455/ai_voice_dubbing",
+      "updated": "Atualizado em Abril"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Automação & IA",
+      "items": ["n8n", "Make", "Claude Code", "ChatGPT API", "RAG", "LLMs", "Prompt Engineering"]
+    },
+    {
+      "category": "Desenvolvimento",
+      "items": ["Python", "TypeScript", "SQL", "HTML/CSS", "Git", "GitHub", "Google Colab"]
+    },
+    {
+      "category": "Dados & BI",
+      "items": ["Power BI", "Excel Avançado", "MS SQL Server", "PostgreSQL", "Análise de Dados"]
+    },
+    {
+      "category": "Infra & Suporte",
+      "items": ["Help Desk N1/N2", "Windows/Linux", "Redes", "WordPress", "SEO", "CRM"]
+    }
+  ],
+  "contact": {
+    "title": "Vamos Trabalhar Juntos?",
+    "description": "Estou disponível para oportunidades de Analista de TI, Automação ou Gestão de Operações. Também aceito projetos freelance de consultoria.",
+    "links": [
+      { "icon": "envelope", "label": "Email", "url": "mailto:sergio.r.sousa@email.com" },
+      { "icon": "linkedin", "label": "LinkedIn", "url": "https://linkedin.com/in/ssousa455" },
+      { "icon": "github", "label": "GitHub", "url": "https://github.com/ssousa455" },
+      { "icon": "whatsapp", "label": "(84) 99656-2202", "url": "https://wa.me/5584996562202" }
+    ]
+  }
+}

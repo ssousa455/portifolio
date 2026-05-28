@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sérgio Sousa | Automação & TI</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-card: #334155;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --border: #475569;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 4rem;
+            align-items: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .hero-content h1 span {
+            color: var(--accent);
+        }
+        
+        .hero-content .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero-content p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--bg-card);
+        }
+        
+        .hero-image {
+            text-align: center;
+        }
+        
+        .hero-image img {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* Stats Section */
+        .stats {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stats-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            text-align: center;
+        }
+        
+        .stat-item h3 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-item p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        
+        /* Projects Section */
+        .projects {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        
+        .section-header {
+            margin-bottom: 3rem;
+        }
+        
+        .section-header h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-header p {
+            color: var(--text-secondary);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .project-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .project-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .project-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .project-title a:hover {
+            color: var(--accent);
+        }
+        
+        .project-lang {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            color: var(--text-secondary);
+        }
+        
+        .project-desc {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            min-height: 50px;
+        }
+        
+        .project-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        
+        .project-updated {
+            color: var(--text-secondary);
+        }
+        
+        .project-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .project-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Blog Section */
+        .blog {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+        
+        .blog-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .blog-card {
+            background-color: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        
+        .blog-card:hover {
+            border-color: var(--accent);
+        }
+        
+        .blog-content {
+            padding: 1.5rem;
+        }
+        
+        .blog-date {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        
+        .blog-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+        }
+        
+        .blog-title a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .blog-title a:hover {
+            color: var(--accent);
+        }
+        
+        .blog-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .blog-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .blog-tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background-color: var(--bg-card);
+            border-radius: 4px;
+            color: var(--text-secondary);
+        }
+        
+        /* Skills Section */
+        .skills {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .skill-category {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .skill-category h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        
+        .skill-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .skill-tag {
+            font-size: 0.85rem;
+            padding: 0.4rem 0.8rem;
+            background-color: var(--bg-card);
+            border-radius: 6px;
+            color: var(--text-secondary);
+        }
+        
+        /* Contact Section */
+        .contact {
+            background-color: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+        }
+        
+        .contact-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+        
+        .contact-container h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .contact-container p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+        
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            background-color: var(--bg-card);
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+        
+        .contact-link:hover {
+            background-color: var(--border);
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            border-top: 1px solid var(--border);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-image img {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">Sérgio<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#projetos">Projetos</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#habilidades">Habilidades</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Automação &<br><span>Tecnologia</span></h1>
+            <p class="subtitle">Analista de TI • Especialista em Automação • Gestão de Operações</p>
+            <p>8+ anos transformando processos complexos em soluções elegantes. 
+            Especialista em n8n, Python, IA generativa e otimização de operações. 
+            Código limpo, resultados mensuráveis.</p>
+            <div class="hero-buttons">
+                <a href="https://github.com/ssousa455" class="btn btn-primary" target="_blank">Ver GitHub</a>
+                <a href="#contato" class="btn btn-secondary">Falar Comigo</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://i.ibb.co/nNwmGQHn/foto-curriculo.png" alt="Sérgio Sousa">
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>8+</h3>
+                <p>Anos de Experiência</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Projetos Entregues</p>
+            </div>
+            <div class="stat-item">
+                <h3>15k+</h3>
+                <p>Corridas 4.9★</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Aprendizado Contínuo</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projetos">
+        <div class="section-header">
+            <h2>Projetos Recentes</h2>
+            <p>Repositórios ativos no GitHub. Código funcionando, não só teoria.</p>
+        </div>
+        
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">
+                            <a href="https://github.com/ssousa455/edge-tts-gui" target="_blank">edge-tts-gui</a>
+                        </h3>
+                    </div>
+                    <span class="project-lang">Python</span>
+                </div>
+                <p class="project-desc">
+                    Interface gráfica simplificada para Edge TTS (Text-to-Speech da Microsoft). 
+                    Converte texto em áudio natural com vozes de alta qualidade.
+                </p>
+                <div class="project-footer">
+                    <span class="project-updated">Atualizado há 10 minutos</span>
+                    <a href="https://github.com/ssousa455/edge-tts-gui" class="project-link" target="_blank">Ver código →</a>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">
+                            <a href="https://github.com/ssousa455/Concurseiro-Pro" target="_blank">Concurseiro-Pro</a>
+                        </h3>
+                    </div>
+                    <span class="project-lang">TypeScript</span>
+                </div>
+                <p class="project-desc">
+                    Sistema completo de gestão de estudos para concursos públicos. 
+                    Focado em resolução de questões, acompanhamento de desempenho e metas.
+                </p>
+                <div class="project-footer">
+                    <span class="project-updated">Atualizado há 20 minutos</span>
+                    <a href="https://github.com/ssousa455/Concurseiro-Pro" class="project-link" target="_blank">Ver código →</a>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">
+                            <a href="https://github.com/ssousa455/video_dubbing_agent_colab" target="_blank">video_dubbing_agent_colab</a>
+                        </h3>
+                    </div>
+                    <span class="project-lang">Jupyter</span>
+                </div>
+                <p class="project-desc">
+                    Pipeline completo de dublagem automatizada para vídeos do YouTube. 
+                    Qualquer idioma → qualquer idioma usando IA e clonagem de voz.
+                </p>
+                <div class="project-footer">
+                    <span class="project-updated">Atualizado há 2 horas</span>
+                    <a href="https://github.com/ssousa455/video_dubbing_agent_colab" class="project-link" target="_blank">Ver código →</a>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">
+                            <a href="https://github.com/ssousa455/mente-foco" target="_blank">mente-foco</a>
+                        </h3>
+                    </div>
+                    <span class="project-lang">TypeScript</span>
+                </div>
+                <p class="project-desc">
+                    Sistema de controle de estudos com técnicas de produtividade e foco. 
+                    Timer Pomodoro integrado, estatísticas de desempenho e gamificação.
+                </p>
+                <div class="project-footer">
+                    <span class="project-updated">Atualizado há 3 horas</span>
+                    <a href="https://github.com/ssousa455/mente-foco" class="project-link" target="_blank">Ver código →</a>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card">
+                <div class="project-header">
+                    <div>
+                        <h3 class="project-title">
+                            <a href="https://github.com/ssousa455/ai_voice_dubbing" target="_blank">ai_voice_dubbing</a>
+                        </h3>
+                    </div>
+                    <span class="project-lang">Python</span>
+                </div>
+                <p class="project-desc">
+                    Suite de ferramentas para dublagem com IA. Processamento de áudio em lote, 
+                    sincronização labial e manutenção de características vocais originais.
+                </p>
+                <div class="project-footer">
+                    <span class="project-updated">Atualizado em Abril</span>
+                    <a href="https://github.com/ssousa455/ai_voice_dubbing" class="project-link" target="_blank">Ver código →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog" id="blog">
+        <div class="blog-container">
+            <div class="section-header">
+                <h2>Últimas Publicações</h2>
+                <p>Insights sobre automação, IA e produtividade. (Integração com CMS em breve)</p>
+            </div>
+            
+            <div class="blog-grid">
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">28 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">Como Reduzi 60% do Tempo de Desenvolvimento com Claude Code</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Relato prático de como integrei assistentes de IA no workflow diário. 
+                            De tarefas repetitivas a código complexo: o que funciona e o que é hype.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">IA</span>
+                            <span class="blog-tag">Produtividade</span>
+                            <span class="blog-tag">Claude</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">25 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">n8n vs Make: Qual Escolher em 2026?</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Comparação técnica e de custo entre as duas maiores plataformas de automação. 
+                            Quando usar cada uma e como migrar entre elas sem perder dados.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">Automação</span>
+                            <span class="blog-tag">n8n</span>
+                            <span class="blog-tag">Make</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">20 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">De Motorista a Analista: O Que 15 Mil Corridas Me Ensinaram Sobre Dados</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            A jornada de otimizar rotas sem saber que estava fazendo análise de dados. 
+                            Lições de customer experience, eficiência operacional e resiliência.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">Carreira</span>
+                            <span class="blog-tag">Dados</span>
+                            <span class="blog-tag">Soft Skills</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">15 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">Construindo um Pipeline de Dublagem com Python e Google Colab</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Tutorial passo a passo: de vídeo em inglês a áudio em português, 
+                            mantendo a voz original. APIs, processamento em lote e sincronização.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">Python</span>
+                            <span class="blog-tag">IA</span>
+                            <span class="blog-tag">Tutorial</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">10 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">Por Que Parei de Estudar Para Concurso e Voltei Para TI</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            A decisão difícil de abandonar a "estabilidade" em busca de crescimento real. 
+                            Como conciliei os dois mundos e encontrei meu lugar na tecnologia.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">Carreira</span>
+                            <span class="blog-tag">Reflexão</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-card">
+                    <div class="blog-content">
+                        <span class="blog-date">5 de Maio, 2026</span>
+                        <h3 class="blog-title">
+                            <a href="#">5 Erros Que Cometi Implementando n8n em Produção</a>
+                        </h3>
+                        <p class="blog-excerpt">
+                            Confissões de quem já quebrou fluxo em horário de pico. 
+                            Segurança, rate limits, tratamento de erros e backup de workflows.
+                        </p>
+                        <div class="blog-tags">
+                            <span class="blog-tag">n8n</span>
+                            <span class="blog-tag">DevOps</span>
+                            <span class="blog-tag">Erros</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="skills" id="habilidades">
+        <div class="section-header">
+            <h2>Stack Tecnológico</h2>
+            <p>Ferramentas que uso diariamente para entregar resultados.</p>
+        </div>
+        
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h3>Automação & IA</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">n8n</span>
+                    <span class="skill-tag">Make</span>
+                    <span class="skill-tag">Claude Code</span>
+                    <span class="skill-tag">ChatGPT API</span>
+                    <span class="skill-tag">RAG</span>
+                    <span class="skill-tag">LLMs</span>
+                    <span class="skill-tag">Prompt Engineering</span>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Desenvolvimento</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">TypeScript</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">HTML/CSS</span>
+                    <span class="skill-tag">Git</span>
+                    <span class="skill-tag">GitHub</span>
+                    <span class="skill-tag">Google Colab</span>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Dados & BI</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Power BI</span>
+                    <span class="skill-tag">Excel Avançado</span>
+                    <span class="skill-tag">MS SQL Server</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">Análise de Dados</span>
+                </div>
+            </div>
+            
+            <div class="skill-category">
+                <h3>Infra & Suporte</h3>
+                <div class="skill-list">
+                    <span class="skill-tag">Help Desk N1/N2</span>
+                    <span class="skill-tag">Windows/Linux</span>
+                    <span class="skill-tag">Redes</span>
+                    <span class="skill-tag">WordPress</span>
+                    <span class="skill-tag">SEO</span>
+                    <span class="skill-tag">CRM</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contato">
+        <div class="contact-container">
+            <h2>Vamos Trabalhar Juntos?</h2>
+            <p>Estou disponível para oportunidades de Analista de TI, Automação ou Gestão de Operações.<br>
+            Também aceito projetos freelance de consultoria.</p>
+            
+            <div class="contact-links">
+                <a href="mailto:sergio.r.sousa@email.com" class="contact-link">
+                    <span>📧</span> Email
+                </a>
+                <a href="https://linkedin.com/in/ssousa455" class="contact-link" target="_blank">
+                    <span>💼</span> LinkedIn
+                </a>
+                <a href="https://github.com/ssousa455" class="contact-link" target="_blank">
+                    <span>💻</span> GitHub
+                </a>
+                <a href="tel:+5584996562202" class="contact-link">
+                    <span>📱</span> (84) 99656-2202
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2026 Sérgio Sousa. Desenvolvido com código limpo e café.</p>
+    </footer>
+</body>
+</html>

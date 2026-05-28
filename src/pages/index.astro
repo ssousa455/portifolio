@@ -1,85 +1,74 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Sidebar from '../components/Sidebar.astro';
 import { getCollection } from 'astro:content';
-import { readData } from '../lib/readData';
-import { postUrl } from '../lib/blogRoutes';
-const siteConfig = readData('siteConfig.json');
-const homeConfig = readData('home.json') as any;
+import Hero from '../components/portfolio/Hero.astro';
+import Stats from '../components/portfolio/Stats.astro';
+import Projects from '../components/portfolio/Projects.astro';
+import Skills from '../components/portfolio/Skills.astro';
+import Contact from '../components/portfolio/Contact.astro';
 
 const posts = (await getCollection('blog')).sort(
   (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
-
-const latestLimit = homeConfig?.latestPosts?.limit ?? 6;
-const latestPosts = posts.slice(0, latestLimit);
-const latestBtnText = homeConfig?.latestPosts?.btnText || 'Ver Todos os Posts';
-const latestBtnLink = homeConfig?.latestPosts?.btnLink || '/blog';
-const sectionTitle = homeConfig?.sectionTitles?.latestPosts || 'Posts Recentes';
+const latestPosts = posts.slice(0, 3);
 
 function formatDate(date: Date) {
   return date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' });
 }
 ---
 
-<BaseLayout title={siteConfig.name} description={siteConfig.description}>
+<BaseLayout title="Sérgio Sousa | Automação &amp; TI" description="Portfólio de Sérgio Sousa — Analista de TI especializado em automação, Python, IA generativa e otimização de operações.">
 
-  <!-- Hero / latest posts -->
-  <section class="max-w-6xl mx-auto px-4 py-10">
-    <div class="flex flex-col lg:flex-row gap-8">
+  <Hero />
+  <Stats />
+  <Projects />
 
-      <!-- Main content -->
-      <div class="flex-1 min-w-0">
-        <h2 class="text-2xl font-bold mb-6" style="font-family: var(--font-heading);">{sectionTitle}</h2>
-
+  <section id="blog" style="padding: 80px 0; background: #f8f9fa;">
+    <div class="container-xl">
+      <div style="margin-bottom: 48px;">
+        <h2 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 2rem; font-weight: 700;">Últimas Publicações</h2>
+        <p style="color: var(--text-secondary, #6c757d);">Insights sobre automação, IA e produtividade.</p>
+      </div>
+      <div class="row g-4">
         {posts.length === 0 && (
-          <div class="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
+          <div class="col-12 text-center text-muted py-5">
             <p>Nenhum artigo publicado ainda.</p>
-            <p class="text-sm mt-1">Crie seu primeiro post no <a href="/admin" class="text-[--color-primary] underline">painel admin</a>.</p>
+            <p class="text-sm mt-1">Crie seu primeiro post no <a href="/admin" class="fw-semibold" style="color: var(--walker-primary, #3B82F6);">painel admin</a>.</p>
           </div>
         )}
-
-        <div class="flex flex-col gap-6">
-          {latestPosts.map(post => (
-            <article class="bg-white rounded-xl border border-gray-200 overflow-hidden flex flex-col sm:flex-row hover:shadow-md transition-shadow">
+        {latestPosts.map(post => (
+          <div class="col-md-6 col-lg-4">
+            <article class="card h-100 border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
               {post.data.heroImage && (
-                <a href={postUrl(post.slug)} class="sm:w-48 flex-shrink-0">
-                  <img
-                    src={post.data.heroImage}
-                    alt={post.data.title}
-                    class="w-full h-48 sm:h-full object-cover"
-                  />
+                <a href={`/blog/${post.slug}`}>
+                  <img src={post.data.heroImage} alt={post.data.title} class="card-img-top" style="height: 200px; object-fit: cover;" />
                 </a>
               )}
-              <div class="p-5 flex flex-col justify-center gap-2">
+              <div class="card-body p-4">
                 {post.data.category && (
-                  <a href={`/categoria/${post.data.category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`} class="category-badge self-start">{post.data.category}</a>
+                  <span class="badge bg-primary bg-opacity-10 text-primary mb-2">{post.data.category}</span>
                 )}
-                <h3 class="text-lg font-bold leading-snug" style="font-family: var(--font-heading);">
-                  <a href={postUrl(post.slug)} class="text-gray-900 hover:text-[--color-primary] transition-colors">{post.data.title}</a>
+                <h3 class="h5" style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-weight: 600;">
+                  <a href={`/blog/${post.slug}`} style="color: inherit; text-decoration: none;">{post.data.title}</a>
                 </h3>
                 {post.data.description && (
-                  <p class="text-sm text-gray-500 line-clamp-2">{post.data.description}</p>
+                  <p class="card-text text-muted small mt-2">{post.data.description}</p>
                 )}
-                <p class="text-xs text-gray-400">{formatDate(post.data.pubDate)}</p>
+                <p class="text-muted small mt-3 mb-0">{formatDate(post.data.pubDate)}</p>
               </div>
             </article>
-          ))}
-        </div>
-
-        {posts.length > latestLimit && (
-          <div class="text-center mt-8">
-            <a href={latestBtnLink} class="btn-primary">{latestBtnText}</a>
           </div>
-        )}
+        ))}
       </div>
-
-      <!-- Sidebar -->
-      <aside class="lg:w-80 flex-shrink-0">
-        <Sidebar />
-      </aside>
-
+      {posts.length > 3 && (
+        <div class="text-center mt-4">
+          <a href="/blog" class="btn btn-primary btn-lg">Ver Todos os Posts</a>
+        </div>
+      )}
     </div>
   </section>
+
+  <Skills />
+  <Contact />
 
 </BaseLayout>

@@ -17,9 +17,8 @@ const inlineConfig = pluginsConfig?.emailList?.inline;
 const inlineEnabled = inlineConfig?.enabled === true;
 const inlinePosition = Number(inlineConfig?.position ?? 3);
 
-const RESERVED = ['contato', 'sobre', 'privacidade', 'termos', 'blog', 'admin', 'api', 'categoria'];
-
 export async function getStaticPaths() {
+  const RESERVED = ['contato', 'sobre', 'privacidade', 'termos', 'blog', 'admin', 'api', 'categoria'];
   const siteConfig = (await import('../lib/readData')).readData('siteConfig.json');
   const prefix = siteConfig.blogPrefix ?? '';
 
