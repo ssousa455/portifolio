@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+import { postUrl } from '../lib/blogRoutes';
 import Hero from '../components/portfolio/Hero.astro';
 import Stats from '../components/portfolio/Stats.astro';
 import Projects from '../components/portfolio/Projects.astro';
@@ -23,11 +24,11 @@ function formatDate(date: Date) {
   <Stats />
   <Projects />
 
-  <section id="blog" style="padding: 80px 0; background: #f8f9fa;">
+  <section id="blog" style="padding: 80px 0; background: #f1f5f9;">
     <div class="container-xl">
       <div style="margin-bottom: 48px;">
         <h2 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 2rem; font-weight: 700;">Últimas Publicações</h2>
-        <p style="color: var(--text-secondary, #6c757d);">Insights sobre automação, IA e produtividade.</p>
+        <p style="color: #64748b;">Insights sobre automação, IA e produtividade.</p>
       </div>
       <div class="row g-4">
         {posts.length === 0 && (
@@ -38,33 +39,31 @@ function formatDate(date: Date) {
         )}
         {latestPosts.map(post => (
           <div class="col-md-6 col-lg-4">
-            <article class="card h-100 border-0 shadow-sm" style="border-radius: 12px; overflow: hidden;">
+            <article class="card h-100 border-0" style="border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06); transition: box-shadow 0.2s, transform 0.2s;">
               {post.data.heroImage && (
-                <a href={`/blog/${post.slug}`}>
-                  <img src={post.data.heroImage} alt={post.data.title} class="card-img-top" style="height: 200px; object-fit: cover;" />
+                <a href={postUrl(post.slug)}>
+                  <img src={post.data.heroImage} alt={post.data.title} style="width: 100%; height: 200px; object-fit: cover; display: block;" />
                 </a>
               )}
-              <div class="card-body p-4">
+              <div style="padding: 1.5rem;">
                 {post.data.category && (
-                  <span class="badge bg-primary bg-opacity-10 text-primary mb-2">{post.data.category}</span>
+                  <span style="display: inline-block; background: #e0e7ff; color: #4338ca; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 999px; margin-bottom: 0.75rem;">{post.data.category}</span>
                 )}
-                <h3 class="h5" style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-weight: 600;">
-                  <a href={`/blog/${post.slug}`} style="color: inherit; text-decoration: none;">{post.data.title}</a>
+                <h3 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 1.125rem; font-weight: 600; line-height: 1.4;">
+                  <a href={postUrl(post.slug)} style="color: #1e293b; text-decoration: none;">{post.data.title}</a>
                 </h3>
                 {post.data.description && (
-                  <p class="card-text text-muted small mt-2">{post.data.description}</p>
+                  <p style="color: #64748b; font-size: 0.875rem; margin-top: 0.5rem; line-height: 1.5;">{post.data.description}</p>
                 )}
-                <p class="text-muted small mt-3 mb-0">{formatDate(post.data.pubDate)}</p>
+                <p style="color: #94a3b8; font-size: 0.8rem; margin-top: 0.75rem; margin-bottom: 0;">{formatDate(post.data.pubDate)}</p>
               </div>
             </article>
           </div>
         ))}
       </div>
-      {posts.length > 3 && (
-        <div class="text-center mt-4">
-          <a href="/blog" class="btn btn-primary btn-lg">Ver Todos os Posts</a>
-        </div>
-      )}
+      <div class="text-center mt-4">
+        <a href="/blog" class="btn btn-primary btn-lg" style="background: var(--walker-primary, #3B82F6); border: none; padding: 0.75rem 2rem; font-weight: 600; border-radius: 8px;">Ver Todos os Posts</a>
+      </div>
     </div>
   </section>
 

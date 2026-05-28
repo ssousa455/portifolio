@@ -11,58 +11,59 @@ const posts = (await getCollection('blog')).sort(
 
 <BaseLayout title="Blog" description="Leia nossos artigos mais recentes">
 
-  <section class="max-w-6xl mx-auto px-4 py-10">
-    <div class="mb-6">
-      <h1 class="text-3xl font-bold" style="font-family: var(--font-heading);">Blog</h1>
-      <nav class="text-sm text-gray-500 mt-1">
-        <a href="/" class="hover:text-gray-700">Home</a>
-        <span class="mx-2">/</span>
-        <span>Blog</span>
-      </nav>
-    </div>
-
-    <div class="flex flex-col lg:flex-row gap-8">
-      <!-- Posts grid -->
-      <div class="flex-1 min-w-0">
-        {posts.length === 0 && (
-          <div class="bg-white rounded-xl border border-gray-200 p-8 text-center text-gray-500">
-            Nenhum artigo publicado ainda.
-          </div>
-        )}
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {posts.map(post => (
-            <article class="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
-              <a href={postUrl(post.slug)} class="block relative">
-                {post.data.heroImage ? (
-                  <img src={post.data.heroImage} alt={post.data.title} class="w-full h-48 object-cover" />
-                ) : (
-                  <div class="w-full h-48 bg-gray-100"></div>
-                )}
-                {post.data.category && (
-                  <span class="category-badge absolute top-3 left-3">{post.data.category}</span>
-                )}
-              </a>
-              <div class="p-5">
-                <p class="text-xs text-gray-400 mb-2">
-                  {post.data.pubDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-                </p>
-                <h2 class="text-base font-bold mb-2 leading-snug" style="font-family: var(--font-heading);">
-                  <a href={postUrl(post.slug)} class="text-gray-900 hover:text-[--color-primary] transition-colors">{post.data.title}</a>
-                </h2>
-                {post.data.description && (
-                  <p class="text-sm text-gray-500 line-clamp-3">{post.data.description}</p>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+  <section style="background: #f1f5f9; padding: 48px 0;">
+    <div class="container-xl">
+      <div style="margin-bottom: 32px;">
+        <h1 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 2rem; font-weight: 700; color: #0f172a;">Blog</h1>
+        <nav style="font-size: 0.875rem; color: #64748b; margin-top: 0.5rem;">
+          <a href="/" style="color: var(--walker-primary, #3B82F6); text-decoration: none;">Home</a>
+          <span style="margin: 0 0.5rem;">/</span>
+          <span>Blog</span>
+        </nav>
       </div>
 
-      <!-- Sidebar -->
-      <aside class="lg:w-80 flex-shrink-0">
-        <Sidebar />
-      </aside>
+      <div class="row">
+        <div class="col-lg-8">
+          {posts.length === 0 && (
+            <div style="background: #fff; border-radius: 12px; padding: 2rem; text-align: center; color: #64748b;">
+              Nenhum artigo publicado ainda.
+            </div>
+          )}
+
+          <div style="display: grid; grid-template-columns: 1fr; gap: 1.5rem;">
+            {posts.map(post => (
+              <article style="background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06); display: flex; flex-direction: column;">
+                {post.data.heroImage ? (
+                  <a href={postUrl(post.slug)}>
+                    <img src={post.data.heroImage} alt={post.data.title} style="width: 100%; height: 240px; object-fit: cover; display: block;" />
+                  </a>
+                ) : (
+                  <div style="width: 100%; height: 240px; background: #e2e8f0;"></div>
+                )}
+                <div style="padding: 1.5rem; display: flex; flex-direction: column; gap: 0.75rem;">
+                  <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    {post.data.category && (
+                      <span style="display: inline-block; background: #e0e7ff; color: #4338ca; font-size: 0.75rem; font-weight: 600; padding: 0.25rem 0.75rem; border-radius: 999px;">{post.data.category}</span>
+                    )}
+                    <span style="font-size: 0.8rem; color: #94a3b8;">{post.data.pubDate.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}</span>
+                  </div>
+                  <h2 style="font-family: var(--walker-font-heading, 'Inter', sans-serif); font-size: 1.25rem; font-weight: 700; line-height: 1.4; margin: 0;">
+                    <a href={postUrl(post.slug)} style="color: #0f172a; text-decoration: none;">{post.data.title}</a>
+                  </h2>
+                  {post.data.description && (
+                    <p style="color: #64748b; font-size: 0.9rem; line-height: 1.6; margin: 0;">{post.data.description}</p>
+                  )}
+                  <a href={postUrl(post.slug)} style="color: var(--walker-primary, #3B82F6); font-weight: 600; font-size: 0.875rem; text-decoration: none; margin-top: 0.5rem;">Ler artigo →</a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+
+        <aside class="col-lg-4">
+          <Sidebar />
+        </aside>
+      </div>
     </div>
   </section>
 
