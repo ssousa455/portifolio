@@ -2,7 +2,7 @@ import React from 'react';
 import {
     LayoutDashboard, FileText, Tag, Users, Home, Info, Phone,
     Shield, Settings, LogOut, ChevronRight, ExternalLink, Navigation,
-    Sparkles, Package,
+    Sparkles, Package, MessageSquare,
 } from 'lucide-react';
 
 interface NavItem {
@@ -24,6 +24,7 @@ const pageItems: NavItem[] = [
     { label: 'Home', href: '/admin/home', icon: Home, section: 'home' },
     { label: 'Sobre', href: '/admin/sobre', icon: Info, section: 'sobre' },
     { label: 'Contato', href: '/admin/contato', icon: Phone, section: 'contato' },
+    { label: 'Mensagens', href: '/admin/messages', icon: MessageSquare, section: 'messages' },
     { label: 'Privacidade & Termos', href: '/admin/legal', icon: Shield, section: 'legal' },
 ];
 
