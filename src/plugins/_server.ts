@@ -145,6 +145,40 @@ export async function readFileFromRepo(
     return null;
 }
 
+/**
+ * Retorna config do Brevo mesclando pluginsConfig.json com env vars do Vercel.
+ * Env vars têm prioridade — resolvem o problema de GitHub push protection
+ * que bloqueia commits com API keys.
+ */
+export function getBrevoConfig(): {
+    brevoApiKey: string;
+    brevoListId: string;
+    senderEmail: string;
+    senderName: string;
+    notificationEmail: string;
+    popup: any;
+    sidebar: any;
+    inline: any;
+    sequences: any[];
+} {
+    const config = readPluginsConfig();
+    const el = config?.emailList ?? {};
+    const p = el.popup ?? {};
+    const sb = el.sidebar ?? {};
+    const il = el.inline ?? {};
+    return {
+        brevoApiKey: process.env.BREVO_API_KEY || el.brevoApiKey || '',
+        brevoListId: process.env.BREVO_LIST_ID || el.brevoListId || '',
+        senderEmail: process.env.BREVO_SENDER_EMAIL || el.senderEmail || '',
+        senderName: process.env.BREVO_SENDER_NAME || el.senderName || '',
+        notificationEmail: process.env.BREVO_NOTIFICATION_EMAIL || el.notificationEmail || '',
+        popup: p,
+        sidebar: sb,
+        inline: il,
+        sequences: el.sequences ?? [],
+    };
+}
+
 /** Verifica se um arquivo existe no repo */
 export async function fileExistsInRepo(
     filePath: string,

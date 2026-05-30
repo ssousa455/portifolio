@@ -1,5 +1,5 @@
 import type { APIRoute } from 'astro';
-import { readPluginsConfig, readFileFromRepo, writeFileToRepo } from '../../plugins/_server';
+import { getBrevoConfig, readFileFromRepo, writeFileToRepo } from '../../plugins/_server';
 import { sendTransactionalEmail } from '../../plugins/email-list/brevo-api';
 
 export const prerender = false;
@@ -55,12 +55,11 @@ export const POST: APIRoute = async ({ request }) => {
     ).catch(() => null);
 
     // Try sending notification email via Brevo if fully configured
-    const config = readPluginsConfig();
-    const brevoConfig = config?.emailList;
-    if (brevoConfig?.brevoApiKey && brevoConfig?.senderEmail && brevoConfig?.notificationEmail) {
+    const brevo = getBrevoConfig();
+    if (brevo.brevoApiKey && brevo.senderEmail && brevo.notificationEmail) {
       sendTransactionalEmail(
-        brevoConfig.brevoApiKey,
-        brevoConfig.notificationEmail,
+        brevo.brevoApiKey,
+        brevo.notificationEmail,
         `[Portfolio] ${subject || 'Nova mensagem de contato'} - ${name}`,
         `<h2>Nova mensagem de contato</h2>
          <p><strong>Nome:</strong> ${name}</p>
@@ -68,8 +67,8 @@ export const POST: APIRoute = async ({ request }) => {
          <p><strong>Assunto:</strong> ${subject || '(sem assunto)'}</p>
          <hr>
          <p>${message.replace(/\n/g, '<br>')}</p>`,
-        brevoConfig.senderEmail,
-        brevoConfig.senderName || 'Portfolio'
+        brevo.senderEmail,
+        brevo.senderName || 'Portfolio'
       ).catch(() => null);
     }
 

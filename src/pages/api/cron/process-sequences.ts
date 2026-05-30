@@ -8,7 +8,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { readPluginsConfig, readDataFile, readFileFromRepo, writeFileToRepo } from '../../../plugins/_server';
+import { getBrevoConfig, readDataFile, readFileFromRepo, writeFileToRepo } from '../../../plugins/_server';
 import { sendTransactionalEmail } from '../../../plugins/email-list/brevo-api';
 
 export const prerender = false;
@@ -30,10 +30,9 @@ export const GET: APIRoute = async ({ request }) => {
     }
 
     try {
-        const config = readPluginsConfig();
-        const sequences: Array<{ subject: string; body: string; delayDays: number }> =
-            config?.emailList?.sequences ?? [];
-        const apiKey: string = config?.emailList?.brevoApiKey ?? '';
+        const brevo = getBrevoConfig();
+        const sequences = brevo.sequences;
+        const apiKey = brevo.brevoApiKey;
 
         if (sequences.length === 0) return json({ processed: 0, sent: 0, failed: 0, reason: 'no_sequences' });
         if (!apiKey) return json({ processed: 0, sent: 0, failed: 0, reason: 'no_api_key' });

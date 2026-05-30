@@ -12,7 +12,7 @@
  */
 
 import type { APIRoute } from 'astro';
-import { readPluginsConfig, readFileFromRepo, writeFileToRepo } from '../../plugins/_server';
+import { getBrevoConfig, readFileFromRepo, writeFileToRepo } from '../../plugins/_server';
 import { addContact } from '../../plugins/email-list/brevo-api';
 
 export const prerender = false;
@@ -101,13 +101,12 @@ export const POST: APIRoute = async ({ request }) => {
         );
 
         // Sincroniza com Brevo se configurado
-        const config = readPluginsConfig();
-        const emailListConfig = config?.emailList;
-        if (emailListConfig?.brevoApiKey && emailListConfig?.brevoListId) {
+        const brevo = getBrevoConfig();
+        if (brevo.brevoApiKey && brevo.brevoListId) {
             await addContact(
-                emailListConfig.brevoApiKey,
+                brevo.brevoApiKey,
                 email,
-                Number(emailListConfig.brevoListId),
+                Number(brevo.brevoListId),
                 name || undefined
             ).catch(() => null); // falha silenciosa — não bloqueia inscrição local
         }

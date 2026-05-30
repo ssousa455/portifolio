@@ -7,7 +7,7 @@
 
 import type { APIRoute } from 'astro';
 import { validateSession } from '../../../../../lib/auth';
-import { readPluginsConfig, readDataFile } from '../../../../../plugins/_server';
+import { getBrevoConfig, readDataFile } from '../../../../../plugins/_server';
 import { sendTransactionalEmail } from '../../../../../plugins/email-list/brevo-api';
 
 export const prerender = false;
@@ -36,9 +36,8 @@ export const POST: APIRoute = async ({ request }) => {
             return json({ success: false, message: 'Campos obrigatórios: to, subject, htmlContent.' }, 400);
         }
 
-        const config = readPluginsConfig();
-        const apiKey = config?.emailList?.brevoApiKey;
-        if (!apiKey) {
+        const brevo = getBrevoConfig();
+        if (!brevo.brevoApiKey) {
             return json({ success: false, message: 'API Key do Brevo não configurada.' }, 400);
         }
 
@@ -50,7 +49,7 @@ export const POST: APIRoute = async ({ request }) => {
         }
 
         const result = await sendTransactionalEmail(
-            apiKey,
+            brevo.brevoApiKey,
             to,
             subject,
             htmlContent,

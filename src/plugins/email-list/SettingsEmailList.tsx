@@ -23,30 +23,9 @@ export default function SettingsEmailList() {
     const [senderEmail, setSenderEmail] = useState('');
     const [senderName, setSenderName] = useState('');
     const [notificationEmail, setNotificationEmail] = useState('');
-    const [popupEnabled, setPopupEnabled] = useState(false);
-    const [headline, setHeadline] = useState('Não perca nenhum artigo!');
-    const [subheadline, setSubheadline] = useState('Receba os melhores conteúdos direto no seu e-mail.');
-    const [triggerType, setTriggerType] = useState<'delay' | 'scroll'>('delay');
-    const [triggerValue, setTriggerValue] = useState(5);
-    const [showOnce, setShowOnce] = useState(true);
-
-    const [sidebarEnabled, setSidebarEnabled] = useState(true);
-    const [sidebarHeadline, setSidebarHeadline] = useState('Newsletter');
-    const [sidebarSubheadline, setSidebarSubheadline] = useState('Junte-se a nossos leitores!');
-    const [inlineEnabled, setInlineEnabled] = useState(false);
-    const [inlineHeadline, setInlineHeadline] = useState('Gostando do conteúdo?');
-    const [inlineSubheadline, setInlineSubheadline] = useState('Receba artigos como este direto no seu e-mail.');
-    const [inlinePosition, setInlinePosition] = useState(3);
-
-    const [showApiKey, setShowApiKey] = useState(false);
-    const [fileSha, setFileSha] = useState('');
-    const [fullConfig, setFullConfig] = useState<any>(null);
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
-    const [testing, setTesting] = useState(false);
-    const [testResult, setTestResult] = useState<{ ok: boolean; message: string } | null>(null);
     const [error, setError] = useState('');
     const [saved, setSaved] = useState(false);
+    const [savingError, setSavingError] = useState('');
 
     useEffect(() => {
         githubApi('read', CONFIG_PATH)
@@ -60,6 +39,10 @@ export default function SettingsEmailList() {
                 setSenderEmail(el.senderEmail ?? '');
                 setSenderName(el.senderName ?? '');
                 setNotificationEmail(el.notificationEmail ?? '');
+                setEnvApiKey(!!data._env?.BREVO_API_KEY);
+                setEnvListId(!!data._env?.BREVO_LIST_ID);
+                setEnvSenderEmail(!!data._env?.BREVO_SENDER_EMAIL);
+                setEnvNotificationEmail(!!data._env?.BREVO_NOTIFICATION_EMAIL);
                 const popup = el.popup ?? {};
                 setPopupEnabled(popup.enabled ?? false);
                 setHeadline(popup.headline ?? 'Não perca nenhum artigo!');
@@ -82,17 +65,15 @@ export default function SettingsEmailList() {
     }, []);
 
     const handleSave = async () => {
-        setSaving(true); setSaved(false); setError('');
+        setSaving(true); setSaved(false); setError(''); setSavingError('');
         triggerToast('Salvando configurações...', 'progress', 30);
         try {
+            // Only save non-sensitive config to the repo.
+            // API key, sender emails etc. must be set via Vercel env vars (BREVO_API_KEY, etc.)
             const updated = {
                 ...fullConfig,
                 emailList: {
-                    brevoApiKey: brevoApiKey.trim(),
                     brevoListId: brevoListId.trim(),
-                    senderEmail: senderEmail.trim(),
-                    senderName: senderName.trim(),
-                    notificationEmail: notificationEmail.trim(),
                     popup: {
                         enabled: popupEnabled,
                         headline: headline.trim(),
@@ -126,8 +107,17 @@ export default function SettingsEmailList() {
             triggerToast('Configurações salvas!', 'success', 100);
             setTimeout(() => setSaved(false), 3000);
         } catch (err: any) {
-            setError(err.message);
-            triggerToast(`Erro: ${err.message}`, 'error');
+            const msg = err.message || '';
+            if (msg.includes('Secret detected') || msg.includes('secret scan')) {
+                setSavingError(
+                    'O GitHub bloqueou o salvamento porque detectou uma chave de API no arquivo. ' +
+                    'Configure as credenciais do Brevo como variáveis de ambiente no Vercel: ' +
+                    'BREVO_API_KEY, BREVO_LIST_ID, BREVO_SENDER_EMAIL, BREVO_NOTIFICATION_EMAIL'
+                );
+            } else {
+                setError(msg);
+            }
+            triggerToast(`Erro: ${msg}`, 'error');
         } finally {
             setSaving(false);
         }
@@ -179,6 +169,21 @@ export default function SettingsEmailList() {
                 <div className="flex items-center gap-2 mb-5">
                     <Mail className="w-5 h-5 text-violet-600" />
                     <h3 className="font-bold text-slate-800">Integração Brevo</h3>
+                </div>
+
+                {/* Env vars guidance */}
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-5 text-sm">
+                    <p className="font-semibold text-amber-800 mb-1">Credenciais via Variavel de Ambiente</p>
+                    <p className="text-amber-700 text-xs leading-relaxed">
+                        Por segurança, as credenciais (API Key, emails) nao sao salvas no repositorio.
+                        Configure no <strong>Vercel &rarr; Project Settings &rarr; Environment Variables</strong>:
+                    </p>
+                    <div className="mt-2 grid grid-cols-1 gap-y-1 text-xs font-mono text-amber-700">
+                        <span><code className="bg-amber-100 px-1 rounded">BREVO_API_KEY</code> — sua chave xkeysib-...</span>
+                        <span><code className="bg-amber-100 px-1 rounded">BREVO_LIST_ID</code> — ID numerico da lista</span>
+                        <span><code className="bg-amber-100 px-1 rounded">BREVO_SENDER_EMAIL</code> — email remetente validado</span>
+                        <span><code className="bg-amber-100 px-1 rounded">BREVO_NOTIFICATION_EMAIL</code> — email para notificacoes</span>
+                    </div>
                 </div>
 
                 <div className="space-y-4">
@@ -521,6 +526,18 @@ export default function SettingsEmailList() {
             {error && (
                 <div className="p-4 bg-red-50 text-red-700 border-l-4 border-red-500 text-sm font-medium rounded-r-xl flex gap-2">
                     <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />{error}
+                </div>
+            )}
+
+            {savingError && (
+                <div className="p-4 bg-amber-50 text-amber-800 border border-amber-300 rounded-xl text-sm leading-relaxed">
+                    <p className="font-bold mb-1">Como configurar as Variaveis de Ambiente no Vercel:</p>
+                    <ol className="list-decimal list-inside space-y-1 text-amber-700">
+                        <li>Va em <strong>https://vercel.com/ssousa455/portifolio/settings/environment-variables</strong></li>
+                        <li>Adicione cada variavel: <code className="bg-amber-100 px-1 rounded">BREVO_API_KEY</code>, <code className="bg-amber-100 px-1 rounded">BREVO_LIST_ID</code>, etc.</li>
+                        <li>Escolha "Production" e "Preview" nos ambientes</li>
+                        <li>Clique "Save" e depois faça um novo deploy</li>
+                    </ol>
                 </div>
             )}
 
