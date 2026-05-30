@@ -20,6 +20,9 @@ const CONFIG_PATH = 'src/data/pluginsConfig.json';
 export default function SettingsEmailList() {
     const [brevoApiKey, setBrevoApiKey] = useState('');
     const [brevoListId, setBrevoListId] = useState('');
+    const [senderEmail, setSenderEmail] = useState('');
+    const [senderName, setSenderName] = useState('');
+    const [notificationEmail, setNotificationEmail] = useState('');
     const [popupEnabled, setPopupEnabled] = useState(false);
     const [headline, setHeadline] = useState('Não perca nenhum artigo!');
     const [subheadline, setSubheadline] = useState('Receba os melhores conteúdos direto no seu e-mail.');
@@ -54,6 +57,9 @@ export default function SettingsEmailList() {
                 const el = config?.emailList ?? {};
                 setBrevoApiKey(el.brevoApiKey ?? '');
                 setBrevoListId(el.brevoListId ?? '');
+                setSenderEmail(el.senderEmail ?? '');
+                setSenderName(el.senderName ?? '');
+                setNotificationEmail(el.notificationEmail ?? '');
                 const popup = el.popup ?? {};
                 setPopupEnabled(popup.enabled ?? false);
                 setHeadline(popup.headline ?? 'Não perca nenhum artigo!');
@@ -84,6 +90,9 @@ export default function SettingsEmailList() {
                 emailList: {
                     brevoApiKey: brevoApiKey.trim(),
                     brevoListId: brevoListId.trim(),
+                    senderEmail: senderEmail.trim(),
+                    senderName: senderName.trim(),
+                    notificationEmail: notificationEmail.trim(),
                     popup: {
                         enabled: popupEnabled,
                         headline: headline.trim(),
@@ -209,6 +218,48 @@ export default function SettingsEmailList() {
                         />
                         <p className="text-xs text-slate-400 mt-1 ml-1">
                             Encontre em Brevo → Contatos → Listas → ID da lista.
+                        </p>
+                    </div>
+
+                    {/* Sender Email */}
+                    <div>
+                        <label className={labelClass}>Email Remetente</label>
+                        <input
+                            type="email"
+                            value={senderEmail}
+                            onChange={e => setSenderEmail(e.target.value)}
+                            placeholder="contato@seudominio.com"
+                            className={inputClass}
+                        />
+                        <p className="text-xs text-slate-400 mt-1 ml-1">
+                            Email validado no Brevo (Settings → Senders). Usado como remetente de emails transacionais.
+                        </p>
+                    </div>
+
+                    {/* Sender Name */}
+                    <div>
+                        <label className={labelClass}>Nome do Remetente</label>
+                        <input
+                            type="text"
+                            value={senderName}
+                            onChange={e => setSenderName(e.target.value)}
+                            placeholder="Sérgio Sousa"
+                            className={inputClass}
+                        />
+                    </div>
+
+                    {/* Notification Email */}
+                    <div>
+                        <label className={labelClass}>Notificação de Contato</label>
+                        <input
+                            type="email"
+                            value={notificationEmail}
+                            onChange={e => setNotificationEmail(e.target.value)}
+                            placeholder="sergio.r.sousa@email.com"
+                            className={inputClass}
+                        />
+                        <p className="text-xs text-slate-400 mt-1 ml-1">
+                            Para qual email enviar notificações do formulário de contato. Pode ser seu email pessoal.
                         </p>
                     </div>
                 </div>

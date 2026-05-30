@@ -54,26 +54,23 @@ export const POST: APIRoute = async ({ request }) => {
       { message: `Contact form: ${name} <${email}>` }
     ).catch(() => null);
 
-    // Try sending notification email via Brevo if configured
+    // Try sending notification email via Brevo if fully configured
     const config = readPluginsConfig();
     const brevoConfig = config?.emailList;
-    if (brevoConfig?.brevoApiKey) {
-      const notificationEmail = brevoConfig.notificationEmail || brevoConfig.senderEmail;
-      if (notificationEmail) {
-        sendTransactionalEmail(
-          brevoConfig.brevoApiKey,
-          notificationEmail,
-          `[Portfolio] ${subject || 'Nova mensagem de contato'} - ${name}`,
-          `<h2>Nova mensagem de contato</h2>
-           <p><strong>Nome:</strong> ${name}</p>
-           <p><strong>Email:</strong> ${email}</p>
-           <p><strong>Assunto:</strong> ${subject || '(sem assunto)'}</p>
-           <hr>
-           <p>${message.replace(/\n/g, '<br>')}</p>`,
-          brevoConfig.senderEmail || email,
-          name
-        ).catch(() => null);
-      }
+    if (brevoConfig?.brevoApiKey && brevoConfig?.senderEmail && brevoConfig?.notificationEmail) {
+      sendTransactionalEmail(
+        brevoConfig.brevoApiKey,
+        brevoConfig.notificationEmail,
+        `[Portfolio] ${subject || 'Nova mensagem de contato'} - ${name}`,
+        `<h2>Nova mensagem de contato</h2>
+         <p><strong>Nome:</strong> ${name}</p>
+         <p><strong>Email:</strong> ${email}</p>
+         <p><strong>Assunto:</strong> ${subject || '(sem assunto)'}</p>
+         <hr>
+         <p>${message.replace(/\n/g, '<br>')}</p>`,
+        brevoConfig.senderEmail,
+        brevoConfig.senderName || 'Portfolio'
+      ).catch(() => null);
     }
 
     return json({
