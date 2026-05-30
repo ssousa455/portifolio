@@ -70,15 +70,14 @@
         "showDisclaimer": true
     },
     "emailList": {
-        "brevoApiKey": "",
-        "brevoListId": "",
+        "brevoListId": "5",
         "popup": {
             "enabled": true,
             "headline": "Inscreva-se na nossa Newsletter",
             "subheadline": "Receba os melhores conteúdos direto no seu e-mail.",
             "triggerType": "scroll",
             "triggerValue": 20,
-            "showOnce": false
+            "showOnce": true
         },
         "sidebar": {
             "enabled": true,
